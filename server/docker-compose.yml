@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=brevly
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U docker -d brevly"]
       interval: 10s
@@ -19,4 +19,4 @@ services:
       retries: 5
 
 volumes:
-  pgdata:
+  postgres_data:

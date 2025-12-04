@@ -4,7 +4,7 @@ import type { Config } from 'drizzle-kit';
 import { env } from './src/env'; // Importamos nossas variáveis validadas
 
 export default {
-  schema: './src/db/schema.ts',
+  schema: './src/infra/db/schema.ts',
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {

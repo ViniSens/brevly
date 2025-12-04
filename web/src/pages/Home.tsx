@@ -43,32 +43,27 @@ async function handleCreateShortLink(event: FormEvent) {
       url: url.trim(), 
       name: customName.trim() || undefined 
     })
-    const displayName = newLink.custom_name || newLink.code
+    const displayName = newLink.short_url
     alert(`Link criado: brev.ly/${displayName}`)
     setUrl('')
     setCustomName('')
   } catch (error: any) {
     console.error('Erro ao criar o link:', error)
-    
-    // Check if it's a validation error from the server
     if (error?.response?.status === 400 && error?.response?.data?.message) {
-      // Show the specific validation error message
       alert(error.response.data.message)
     } else {
-      // Generic error message for other types of errors
       alert('Não foi possível criar o link.')
     }
   }
 }
 
 async function handleDeleteLink(id: string) {
-  // Adiciona confirmação antes de deletar
   const confirmDelete = window.confirm(
     'Tem certeza de que deseja excluir este link? Esta ação não pode ser desfeita.'
   )
   
   if (!confirmDelete) {
-    return // Cancela a operação se o usuário não confirmar
+    return 
   }
 
   setDeletingId(id)
@@ -93,27 +88,6 @@ async function handleDeleteLink(id: string) {
   function handleLinkClickWithRedirect(displayName: string) {
     const redirectUrl = `${import.meta.env.VITE_FRONTEND_URL}/${displayName}`
     window.open(redirectUrl, '_blank', 'noopener,noreferrer')
-  }
-
-  async function handleLinkClickDirect(originalUrl: string, displayName: string) {
-    try {
-      await incrementVisitCount(displayName)
-      queryClient.invalidateQueries({ queryKey: ['links'] })
-      
-      let urlToOpen = originalUrl
-      if (!urlToOpen.startsWith('http://') && !urlToOpen.startsWith('https://')) {
-        urlToOpen = 'https://' + urlToOpen
-      }
-      
-      window.open(urlToOpen, '_blank', 'noopener,noreferrer')
-    } catch (error) {
-      console.error('Error incrementing visit count:', error)
-      let urlToOpen = originalUrl
-      if (!urlToOpen.startsWith('http://') && !urlToOpen.startsWith('https://')) {
-        urlToOpen = 'https://' + urlToOpen
-      }
-      window.open(urlToOpen, '_blank', 'noopener,noreferrer')
-    }
   }
 
   const hasLinksToShow = links && links.length > 0
@@ -240,7 +214,7 @@ async function handleDeleteLink(id: string) {
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {links.map((link) => {
-                          const displayName = link.custom_name || link.code
+                          const displayName = link.short_url || link.id
                           const shortUrl = `brev.ly/${displayName}`
                           const workingUrl = `${import.meta.env.VITE_FRONTEND_URL}/${displayName}`
                           
@@ -287,8 +261,8 @@ async function handleDeleteLink(id: string) {
                                   </IconButton>
                                   <IconButton
                                     variant="danger"
-                                    onClick={() => handleDeleteLink(link.code)}
-                                    isLoading={deletingId === link.code && isDeletingLink}
+                                    onClick={() => handleDeleteLink(link.short_url!)}
+                                    isLoading={deletingId === link.short_url && isDeletingLink}
                                     title="Excluir link"
                                     className="p-1.5 sm:p-2"
                                   >
