@@ -1,14 +1,11 @@
 export function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      {/* Desktop image - hidden on mobile */}
       <img 
         src="/NotFound_desktop.png" 
         alt="Página não encontrada" 
         className="hidden md:block max-w-full h-auto"
       />
-      
-      {/* Mobile image - hidden on desktop */}
       <img 
         src="/NotFound_mobile.png" 
         alt="Página não encontrada" 

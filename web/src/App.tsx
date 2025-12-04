@@ -9,8 +9,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:shortUrl" element={<RedirectPage />} />
-        <Route path="/not-found" element={<NotFound />} /> {/* Rota explícita */}
-        <Route path="*" element={<NotFound />} /> {/* Rota genérica */}
+        <Route path="/not-found" element={<NotFound />} /> 
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

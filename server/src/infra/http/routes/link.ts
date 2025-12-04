@@ -272,8 +272,6 @@ export async function linkRoutes(app: FastifyInstance) {
 
       const file = header + body;
       const filename = `${randomUUID()}.csv`;
-      console.log("passei")
-
 
       await r2.send(
         new PutObjectCommand({
