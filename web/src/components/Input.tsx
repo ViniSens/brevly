@@ -1,12 +1,16 @@
-import { type ComponentProps, useState } from 'react'
+import {
+  type ComponentProps,
+  useState,
+  type FocusEvent,
+} from 'react'
 import { tv } from 'tailwind-variants'
 import { twMerge } from 'tailwind-merge'
 
 const labelStyles = tv({
-  base: 'text-sm font-bold text-center transition-colors',
+  base: 'text-[11px] font-semibold tracking-[0.12em] uppercase text-left transition-colors',
   variants: {
     state: {
-      default: 'text-gray-600',
+      default: 'text-gray-500',
       error: 'text-danger',
       focused: 'text-brand-base',
     },
@@ -17,7 +21,7 @@ const labelStyles = tv({
 })
 
 const inputContainerStyles = tv({
-  base: 'border rounded-md p-3 outline-none transition-colors flex items-center',
+  base: 'border rounded-xl px-3 py-2.5 outline-none transition-colors flex items-center bg-white',
   variants: {
     state: {
       default: 'border-gray-200 focus-within:border-brand-base',
@@ -31,11 +35,11 @@ const inputContainerStyles = tv({
 })
 
 const inputStyles = tv({
-  base: 'outline-none bg-transparent flex-1 text-gray-600',
+  base: 'outline-none bg-transparent flex-1 text-gray-700 text-sm placeholder:text-gray-400',
   variants: {
     hasPrefix: {
-      true: 'text-left',
-      false: 'text-center',
+      true: 'pl-2',
+      false: '',
     },
   },
   defaultVariants: {
@@ -49,18 +53,26 @@ type InputProps = ComponentProps<'input'> & {
   prefix?: string
 }
 
-export function Input({ label, isError, prefix, onFocus, onBlur, className, ...props }: InputProps) {
+export function Input({
+  label,
+  isError,
+  prefix,
+  onFocus,
+  onBlur,
+  className,
+  ...props
+}: InputProps) {
   const [isFocused, setIsFocused] = useState(false)
-  
+
   const state = isError ? 'error' : isFocused ? 'focused' : 'default'
   const hasPrefix = Boolean(prefix)
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     setIsFocused(true)
     onFocus?.(e)
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     setIsFocused(false)
     onBlur?.(e)
   }
@@ -75,7 +87,7 @@ export function Input({ label, isError, prefix, onFocus, onBlur, className, ...p
       </label>
       <div className={twMerge(inputContainerStyles({ state }), className)}>
         {prefix && (
-          <span className="text-gray-500 font-medium select-none">
+          <span className="text-gray-500 font-medium select-none text-sm mr-1">
             {prefix}
           </span>
         )}
